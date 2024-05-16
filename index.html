@@ -26,7 +26,7 @@
         hrefs = text.split('\n');
         urls = [];
         hrefs.forEach(async (href)=>{
-            href = href.trim().split(/(d\/[^\/]*)/gm);
+            href = decodeURI(href.trim()).split(/(d\/[^\/]*)/gm);
             if (href.length != 3) return;
             fetch('https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' 
                 + encodeURIComponent(href[0]) 
