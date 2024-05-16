@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yandex Disk - download links generator</title>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header class="p-8 container mx-auto">
+      <h1 class="text-2xl">Yandex Disk &mdash; Download links generator</h1>
+    </header>
+    <section
+      class="px-8 container mx-auto"
+      x-data="{ text: '', hrefs: [], urls: []}"
+    >
+      <textarea
+        placeholder="Input yandex disk links here"
+        class="bg-slate-100 p-2 w-full h-64"
+        x-model="text"
+        x-effect="
+        hrefs = text.split('\n');
+        urls = [];
+        hrefs.forEach(async (href)=>{
+            href = href.trim().split(/(d\/[^\/]*)/gm);
+            if (href.length != 3) return;
+            console.log('https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' 
+                + encodeURIComponent(href[0]) 
+                + encodeURIComponent(href[1])
+                + '&path=' + encodeURIComponent(href[2]));
+            fetch('https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' 
+                + encodeURIComponent(href[0]) 
+                + encodeURIComponent(href[1])
+                + '&path=' + encodeURIComponent(href[2]))
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                urls.push({
+                    name: href[2],
+                    href: data.href,
+                });
+            });
+        });
+        "
+      ></textarea>
+      <ul class="list-disc mt-4">
+        <template x-for="url in urls">
+          <li class="ml-4 mb-1">
+            <a class="leading-tight text-cyan-800 hover:text-cyan-600" :href="url.href" x-text="url.name"></a>
+          </li>
+        </template>
+      </ul>
+    </section>
+  </body>
+</html>
