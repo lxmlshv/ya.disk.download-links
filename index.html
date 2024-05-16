@@ -28,10 +28,6 @@
         hrefs.forEach(async (href)=>{
             href = href.trim().split(/(d\/[^\/]*)/gm);
             if (href.length != 3) return;
-            console.log('https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' 
-                + encodeURIComponent(href[0]) 
-                + encodeURIComponent(href[1])
-                + '&path=' + encodeURIComponent(href[2]));
             fetch('https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' 
                 + encodeURIComponent(href[0]) 
                 + encodeURIComponent(href[1])
@@ -50,7 +46,7 @@
       <ul class="list-disc mt-4">
         <template x-for="url in urls">
           <li class="ml-4 mb-1">
-            <a class="leading-tight text-cyan-800 hover:text-cyan-600" :href="url.href" x-text="url.name"></a>
+            <a rel="noreferrer" class="leading-tight text-cyan-800 hover:text-cyan-600" :href="url.href" x-text="url.name"></a>
           </li>
         </template>
       </ul>
