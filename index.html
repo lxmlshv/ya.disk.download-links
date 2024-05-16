@@ -34,7 +34,6 @@
                 + '&path=' + encodeURIComponent(href[2]))
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 urls.push({
                     name: href[2],
                     href: data.href,
@@ -43,10 +42,27 @@
         });
         "
       ></textarea>
-      <ul class="list-disc mt-4">
+      <button
+        class="my-4 rounded px-8 py-4 bg-cyan-800 hover:bg-cyan-600 text-white"
+        x-show="urls.length > 0"
+        @click="
+            $refs.links.querySelectorAll('a').forEach(link => {
+                link.click();
+            });
+        "
+      >
+        Download All
+      </button>
+      <ul class="list-disc mt-4" x-ref="links">
         <template x-for="url in urls">
           <li class="ml-4 mb-1">
-            <a rel="noreferrer" class="leading-tight text-cyan-800 hover:text-cyan-600" :href="url.href" x-text="url.name"></a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              class="leading-tight text-cyan-800 hover:text-cyan-600"
+              :href="url.href"
+              x-text="url.name"
+            ></a>
           </li>
         </template>
       </ul>
